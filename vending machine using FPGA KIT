@@ -1,0 +1,266 @@
+
+module stepper(clk,reset,select,stepout,disp,control,ret); 
+	input clk,reset,ret;
+	input [2:0] select; 
+	output reg [3:0] stepout; 
+   output reg [7:0] disp;
+   output reg [3:0] control;	
+	integer temp,stepcount,stepcount1; 
+	reg dclk,f1;
+   reg [3:0] stepout1,stepout2;	
+initial 
+begin 
+	stepout=4'b1000; 
+	stepout1=4'b1000;
+	stepout2=4'b1000;
+	temp=0; 
+	dclk=1'b0; 
+	stepcount=0;
+	stepcount1=0;
+	control=4'b0000;
+	disp=8'b11111100;
+   f1=1'b0;	
+end 
+ 
+always @(posedge clk) 
+begin 
+	temp=temp+1; 
+		if (temp==20000) 
+		begin 
+			dclk=~dclk; 
+			temp=0; 
+		end 
+end 
+ 
+always@(posedge dclk) 
+begin 
+	if(reset) 
+	begin 
+		stepout=4'b1000; 
+		stepout1=4'b1000;
+		stepout2=4'b1000;
+		stepcount=0;
+		stepcount1=0;
+      f1=1'b0; 
+	end 
+	else 
+	begin 
+		case (select)  
+			3'b000: 
+			begin 
+				if(ret==1'b0&&stepcount<=25)
+				begin
+				stepcount=stepcount+1;
+				stepout={stepout1[2:0],stepout1[3]};
+				end
+				else
+				if(ret==1'b1&&stepcount1<=25)
+				begin
+				stepcount1=stepcount1+1;
+			stepout={stepout2[0],stepout2[3:1]}; 
+            end					
+                            if(f1==1'b0)
+								begin
+									control=4'b0111;
+							      disp=8'b110011111;  //p
+							      f1=1'b1;      
+						      end
+					      else if(f1==1'b1)
+								begin
+									control=4'b1011;
+									disp=8'b01100000;	 //1
+									f1=1'b0;
+                         end
+			end 
+			3'b001:
+				begin 
+				if(ret==1'b0&&stepcount<=50)
+				begin
+				stepcount=stepcount+1;
+				stepout={stepout1[2:0],stepout1[3]};
+				end
+				else
+				if(ret==1'b1&&stepcount1<=50)
+				begin
+				stepcount1=stepcount1+1;
+				stepout={stepout2[0],stepout2[3:1]};
+            end					
+					
+                            if(f1==1'b0)
+								begin
+									control=4'b0111;
+							      disp=8'b110011111;  //p
+							      f1=1'b1;      
+						      end
+					      else if(f1==1'b1)
+								begin
+									control=4'b1011;
+									disp=8'b11011011;	 //2
+									f1=1'b0;
+                         end
+			end 
+			3'b010: 
+				begin 
+				if(ret==1'b0&&stepcount<=75)
+				begin
+				stepcount=stepcount+1;
+				stepout={stepout1[2:0],stepout1[3]};
+				end
+				else
+				if(ret==1'b1&&stepcount1<=75)
+				begin
+				stepcount1=stepcount1+1;
+			stepout={stepout2[0],stepout2[3:1]};
+            end					
+                            if(f1==1'b0)
+								begin
+									control=4'b0111;
+							      disp=8'b110011111;  //p
+							      f1=1'b1;      
+						      end
+					      else if(f1==1'b1)
+								begin
+									control=4'b1011;
+									disp=8'b11110011;	 //3
+									f1=1'b0;
+                         end
+								 end
+			3'b011:
+begin			
+				if(ret==1'b0&&stepcount<=100)
+				begin
+				stepcount=stepcount+1;
+				stepout={stepout1[2:0],stepout1[3]};
+				end
+				else
+				if(ret==1'b1&&stepcount1<=100)
+				begin
+				stepcount1=stepcount1+1;
+				stepout={stepout2[0],stepout2[3:1]};
+            end					
+                            if(f1==1'b0)
+								begin
+									control=4'b0111;
+							      disp=8'b110011111;  //p
+							      f1=1'b1;      
+						      end
+					      else if(f1==1'b1)
+								begin
+									control=4'b1011;
+									disp=8'b01100111;	 //4
+									f1=1'b0;
+                         end	
+end								 
+			3'b100: 
+				begin  
+				if(ret==1'b0&&stepcount<=125)
+				begin
+				stepcount=stepcount+1;
+				stepout={stepout1[2:0],stepout1[3]};
+				end
+				else
+				if(ret==1'b1&&stepcount1<=125)
+				begin
+				stepcount1=stepcount1+1;
+			stepout={stepout2[0],stepout2[3:1]};
+            end										
+					
+                            if(f1==1'b0)
+								begin
+									control=4'b0111;
+							      disp=8'b110011111;  //p
+							      f1=1'b1;      
+						      end
+					      else if(f1==1'b1)
+								begin
+									control=4'b1011;
+									disp=8'b10110111;	 //5
+									f1=1'b0;
+                         end
+end								 
+			
+			3'b101: 
+				begin 
+				if(ret==1'b0&&stepcount<=150)
+				begin
+				stepcount=stepcount+1;
+				stepout={stepout1[2:0],stepout1[3]};
+				end
+				else
+				if(ret==1'b1&&stepcount1<=150)
+				begin
+				stepcount1=stepcount1+1;
+				stepout={stepout2[0],stepout2[3:1]};
+            end						
+					if(f1==1'b0)
+								begin
+									control=4'b0111;
+							      disp=8'b110011111;  //p
+							      f1=1'b1;     
+						      end
+					      else if(f1==1'b1)
+								begin
+									control=4'b1011;
+									disp=8'b10111111;	 //6
+									f1=1'b0;
+                         end 
+								
+			end 
+			3'b110: 
+					begin 
+				if(ret==1'b0&&stepcount<=175)
+				begin
+				stepcount=stepcount+1;
+				stepout={stepout1[2:0],stepout1[3]};
+				end
+				else
+				if(ret==1'b1&&stepcount1<=175)
+				begin
+				stepcount=stepcount1+1;
+				stepout={stepout2[0],stepout2[3:1]};
+            end					
+                            if(f1==1'b0)
+								begin
+									control=4'b0111;
+							      disp=8'b110011111;  //p
+							      f1=1'b1;      
+						      end
+					      else if(f1==1'b1)
+								begin
+									control=4'b1011;
+									disp=8'b11100000;	 //7
+									f1=1'b0;
+                         end
+		 end
+			3'b111: 
+			begin  
+	if(ret==1'b0&&stepcount<=200)
+				begin
+				stepcount=stepcount+1;
+				stepout={stepout1[2:0],stepout1[3]};
+				end
+				else
+				if(ret==1'b1&&stepcount1<=200)
+				begin
+				stepcount1=stepcount1+1;
+				stepout={stepout2[0],stepout2[3:1]};
+            end					
+				if(f1==1'b0)
+								begin
+									control=4'b0111;
+							      disp=8'b110011111;  //p
+							      f1=1'b1;      
+						      end
+					      else if(f1==1'b1)
+								begin
+									control=4'b1011;
+									disp=8'b11111111;	 //8
+									f1=1'b0;
+                         end								 
+			end 
+		endcase 
+	end 
+end  
+endmodule 
+ 
+ 
